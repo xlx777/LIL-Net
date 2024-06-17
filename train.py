@@ -12,14 +12,6 @@ def train(train_loader, test_loader, epochs, lr, device, model_dict):
     best_l = 1000
     best_epoch = -1
     model = pyramid_trans_expr2(img_size=224, num_classes=1).to(device)
-    # model = GCViT(depths=[3, 4, 19, 5],
-    #                      num_heads=[3, 6, 12, 24],
-    #                      window_size=[7, 7, 14, 7],
-    #                      dim=96,
-    #                      mlp_ratio=2,
-    #                      layer_scale=1e-5,
-    #                      num_classes=1,
-    #                      drop_path_rate=0.1).to(device)
     optimizer_e = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.05)
     lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer_e, mode='min', patience=5, factor=0.5,
                                                               min_lr=1e-7)
@@ -39,13 +31,10 @@ def train(train_loader, test_loader, epochs, lr, device, model_dict):
             img, label = img.to(device), label.to(device).to(torch.float32)
             optimizer_e.zero_grad()
             score = model.forward(img)
-            # score = torch.transpose(score, 0, 1)
             s_mean = torch.mean(score)
             l_mean = torch.mean(label)
-            # reg_loss = l2_regularization(model, 1e-1).to(device)
             loss = criterion2(score, label)
             train_loss += loss.item()
-            # rmse1 = torch.pow((label - score), 2)
             rmse = torch.sqrt(torch.pow(torch.abs(label - score), 2).mean()).item()
             train_rmes += rmse
             mae = torch.abs(label - score).mean().item()
@@ -68,7 +57,6 @@ def train(train_loader, test_loader, epochs, lr, device, model_dict):
         train_rmes /= step
         train_mae /= step
         train_loss /= step
-        # model.eval()
         val_rmes, val_mae, val_loss = validate(model, test_loader, device, criterion1, criterion2)
         lr_scheduler.step(val_loss)
         if val_loss < best_l:

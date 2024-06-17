@@ -15,9 +15,9 @@ torch.cuda.manual_seed(seed)
 torch.cuda.manual_seed_all(seed)
 torch.backends.cudnn.benchmark = False
 torch.backends.cudnn.deterministic = True
-batch_size = 2
+batch_size = 48
 lr = 1e-4
-epochs = 80
+epochs = 200
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 model_dir = './model_dict'

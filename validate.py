@@ -14,7 +14,6 @@ def validate(model, test_loader, device, criterion1, criterion2):
         for img, label, _ in test_loader:
             img, label = img.to(device), label.to(device).to(torch.float32)
             score = model(img)
-            # score = torch.transpose(score, 0, 1)
             s_mean = torch.mean(score)
             l_mean = torch.mean(label)
             loss = criterion2(score, label)
@@ -22,7 +21,6 @@ def validate(model, test_loader, device, criterion1, criterion2):
             rmse = torch.sqrt(torch.pow(torch.abs(score - label), 2).mean()).item()
             mae = torch.abs(score - label).mean().item()
             val_rmes += rmse
-            # mae = torch.abs(score - label).mean().item()
             val_mae += mae
             step_name = str(loca) + "-validate.txt"
             s = 'Step:{} \tTrain RMSE:{:.2f} MAE:{:.2f} \t score:{:.2f} \t label:{:.2f}\t' \

@@ -1,25 +1,18 @@
 import os
 import time
-
-from PRAnet18 import PRAnet
-from model import ResNet18
 import torch
 from dataset import MyDataset
 from torch.utils.data import DataLoader
 import pandas as pd
 from tqdm import tqdm
-from models.backbone import backbone
 from models.LIL import pyramid_trans_expr2
 
-batch_size = 256
+batch_size = 48
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-# model = ResNet18()
 model = pyramid_trans_expr2(img_size=224, num_classes=1).to(device)
-# model = PRAnet().to(device)
-# model = backbone(img_size=224, num_classes=1).to(device)
-model_dict = torch.load('model_dict/Poster_5.78.pth', map_location=device)
+model_dict = torch.load('xx.pth', map_location=device)
 model.load_state_dict(model_dict)
-dataset_test = MyDataset('/home/dell/xlx/processed/16/processed/test/', '/home/dell/xlx/processed/label.csv')
+dataset_test = MyDataset('test_path', 'label_path')
 num_test = len(dataset_test)
 test_loader = DataLoader(dataset=dataset_test, batch_size=batch_size, shuffle=False, pin_memory=True,
                          drop_last=False)
