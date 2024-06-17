@@ -16,5 +16,6 @@ main.py		Model training entry file
 
 ### How to run the code
 ```
+pip install -r requirements.txt
 main.py--->test.py
 ```
