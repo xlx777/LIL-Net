@@ -331,7 +331,7 @@ class MSFF(nn.Module):
         return xo
 
 
-class pyramid_trans_expr2(nn.Module):
+class LIL2(nn.Module):
     def __init__(self, img_size=224, num_classes=8631, window_size=[28, 14, 7], num_heads=[2, 4, 8],
                  dims=[64, 128, 256],
                  ):
